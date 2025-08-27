@@ -1,0 +1,79 @@
+﻿{% extends "base.html" %}
+{% block title %}SecureChat  Início{% endblock %}
+{% block content %}
+
+<section class="py-4 py-md-5">
+  <div class="row align-items-center g-4">
+    <div class="col-lg-7">
+      <h1 class="display-5 fw-semibold mb-3">SecureChat</h1>
+      <p class="lead text-muted mb-4">
+        Chat em tempo real com autenticação segura, salas públicas/privadas e moderação.
+        Proteções contra XSS/CSRF, hash de senhas e rate limiting.
+      </p>
+      <div class="d-flex flex-wrap gap-2">
+        {% if current_user.is_authenticated %}
+          <a class="btn btn-primary btn-lg" href="{{ url_for('chat.index') }}">Ir para o Chat</a>
+          <a class="btn btn-outline-secondary btn-lg" href="{{ url_for('auth.change_password') }}">Alterar senha</a>
+          <a class="btn btn-outline-danger btn-lg" href="{{ url_for('auth.logout') }}">Sair</a>
+        {% else %}
+          <a class="btn btn-primary btn-lg" href="{{ url_for('auth.login') }}">Entrar</a>
+          <a class="btn btn-outline-primary btn-lg" href="{{ url_for('auth.register') }}">Criar conta</a>
+          <a class="btn btn-outline-secondary btn-lg" href="{{ url_for('chat.index') }}">Ver salas</a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="card shadow-sm">
+        <div class="card-header">Destaques de segurança</div>
+        <div class="card-body">
+          <ul class="mb-0">
+            <li>Login com <strong>Flask-Login</strong> e senhas com hash.</li>
+            <li><strong>CSRF</strong> habilitado em formulários.</li>
+            <li>Sanitização de mensagens (anti-<strong>XSS</strong>).</li>
+            <li><strong>Rate limiting</strong> para APIs e chat.</li>
+            <li>Salas <strong>privadas</strong> com token (JWT) e moderação.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pb-2">
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Salas públicas e privadas</h5>
+          <p class="card-text">Entre nas salas existentes ou crie novas (se for moderador).</p>
+          <a class="btn btn-outline-primary" href="{{ url_for('chat.index') }}">Explorar salas</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Moderação</h5>
+          <p class="card-text">Modere conversas, aplique ban temporário/permanente com justificativa.</p>
+          <a class="btn btn-outline-secondary" href="{{ url_for('chat.index') }}">Abrir chat</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Sua conta</h5>
+          <p class="card-text">Altere sua senha a qualquer momento com validações de força.</p>
+          {% if current_user.is_authenticated %}
+            <a class="btn btn-outline-secondary" href="{{ url_for('auth.change_password') }}">Alterar senha</a>
+          {% else %}
+            <a class="btn btn-outline-primary me-2" href="{{ url_for('auth.login') }}">Entrar</a>
+            <a class="btn btn-primary" href="{{ url_for('auth.register') }}">Criar conta</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

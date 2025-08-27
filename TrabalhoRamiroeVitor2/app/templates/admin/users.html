@@ -1,0 +1,60 @@
+﻿{% extends "base.html" %}
+{% block title %}Admin · Usuários{% endblock %}
+{% block content %}
+<h1 class="mb-3">Admin · Usuários</h1>
+
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover m-0 align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th class="text-center">Admin</th>
+            <th class="text-center">Moderador</th>
+            <th class="text-end">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for u in users %}
+          <tr>
+            <td>{{ u.id }}</td>
+            <td>{{ u.name }}</td>
+            <td>{{ u.email }}</td>
+            <td class="text-center">
+              {% if u.is_admin %}
+                <span class="badge text-bg-dark">Admin</span>
+              {% else %}
+                <span class="badge text-bg-secondary">Usuário</span>
+              {% endif %}
+            </td>
+            <td class="text-center">
+              {% if u.is_moderator %}
+                <span class="badge text-bg-success">Moderador</span>
+              {% else %}
+                <span class="badge text-bg-secondary">Não</span>
+              {% endif %}
+            </td>
+            <td class="text-end">
+              {% if u.is_moderator %}
+                <form method="POST" action="{{ url_for('admin.mod_off', user_id=u.id) }}" class="d-inline">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <button class="btn btn-sm btn-outline-warning">Remover moderador</button>
+                </form>
+              {% else %}
+                <form method="POST" action="{{ url_for('admin.mod_on', user_id=u.id) }}" class="d-inline">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <button class="btn btn-sm btn-outline-success">Tornar moderador</button>
+                </form>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

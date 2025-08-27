@@ -1,0 +1,30 @@
+﻿{% extends "base.html" %}
+{% block title %}Entrar{% endblock %}
+{% block content %}
+<h1 class="mb-4">Entrar</h1>
+<form method="POST" novalidate class="needs-validation">
+  {{ form.hidden_tag() }}
+
+  <div class="mb-3">
+    <label class="form-label">{{ form.email.label }}</label>
+    {{ form.email(class_="form-control" + (" is-invalid" if form.email.errors else "")) }}
+    {% for e in form.email.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">{{ form.password.label }}</label>
+    {{ form.password(class_="form-control" + (" is-invalid" if form.password.errors else "")) }}
+    {% for e in form.password.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+  </div>
+
+  <div class="form-check mb-3">
+    {{ form.remember(class_="form-check-input", id="remember") }}
+    <label for="remember" class="form-check-label">Lembrar</label>
+  </div>
+
+  <div class="d-grid gap-2">
+    <button class="btn btn-primary">{{ form.submit.label.text }}</button>
+    <a class="btn btn-outline-secondary" href="{{ url_for('auth.register') }}">Criar conta</a>
+  </div>
+</form>
+{% endblock %}
